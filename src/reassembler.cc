@@ -29,7 +29,7 @@ bool compareSubs(const Sub& a, const Sub& b) {
 
 void Reassembler::insert( uint64_t first_index, string data, bool is_last_substring)
 {
-  uint64_t store_endIdx = ack_index + output_.available_capacity();
+  uint64_t store_endIdx = ack_index + output_.writer().available_capacity();
   if(store_endIdx <= first_index){
     return;
   }
@@ -69,10 +69,10 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
       // cout << "ack_index " << ack_index << endl;
       // cout << "endIdx " << endIdx << endl;
       string writedStr = firstElement.data.substr(ack_index - firstElement.index);
-      output_.push(writedStr);
+      output_.writer().push(writedStr);
       // cout << "push string: " << writedStr << endl;
       if(firstElement.is_last_substring){
-        output_.close();
+        output_.writer().close();
       }
       ack_index += writedStr.length();
     }
