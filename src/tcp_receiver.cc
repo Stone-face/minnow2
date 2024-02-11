@@ -12,7 +12,7 @@ void TCPReceiver::receive( TCPSenderMessage message )
   }
   Wrap32 payloadSeqno = message.SYN ? message.seqno + 1 : message.seqno;
   uint64_t absSeqno = payloadSeqno.unwrap(ISN, checkpoint);
-  string data = message.payload.release();
+  string data = message.payload;
   reassembler_.insert(absSeqno - 1, data, message.FIN); // string_view??
   checkpoint = absSeqno - 1 + data.length() - 1; //  index of the last reassembled byte 
 }
