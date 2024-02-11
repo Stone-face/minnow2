@@ -22,9 +22,9 @@ TCPReceiverMessage TCPReceiver::send() const
   // Your code here.
   std::optional<Wrap32> ack;
   if(isISNSet){
-    uint64_t ackNo = inbound_stream.bytes_pushed() + 1;  // +1: convert stream index to absolute index
+    uint64_t ackNo = reassembler_.writer().bytes_pushed() + 1;  // +1: convert stream index to absolute index
     //  the first (unreceived)byte the receiver is interested in receiving
-    ackNo += inbound_stream.writer().is_closed() ? 1 : 0;
+    ackNo += reassembler_.writer().is_closed() ? 1 : 0;
     ack = Wrap32::wrap(ackNo, ISN);
   }
 
