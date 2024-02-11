@@ -30,7 +30,7 @@ TCPReceiverMessage TCPReceiver::send() const
   }
 
   uint16_t windowSize = reassembler_.writer().available_capacity() > UINT16_MAX ? UINT16_MAX : static_cast<uint16_t>(reassembler_.writer().available_capacity());
-
+  error = reassembler_.writer().has_error();
   TCPReceiverMessage message{
     ack,
     windowSize,
