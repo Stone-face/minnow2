@@ -93,7 +93,7 @@ TCPSenderMessage TCPSender::make_empty_message() const
     SYN,
     data,
     FIN,
-    input_.reader().has_error()
+    input_.has_error()
   };
 
   return message;
@@ -101,7 +101,9 @@ TCPSenderMessage TCPSender::make_empty_message() const
 
 void TCPSender::receive( const TCPReceiverMessage& msg )
 {
-
+  if(msg.RST) {
+    input_.set_error();
+  }
   window_size = msg.window_size;
   
   bool isNewData = false;
