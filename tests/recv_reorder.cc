@@ -12,7 +12,7 @@ using namespace std;
 int main()
 {
   try {
-    auto rd = get_random_engine();
+    // auto rd = get_random_engine();
 
     // {
     //   const uint32_t isn = uniform_int_distribution<uint32_t> { 0, UINT32_MAX }( rd );
