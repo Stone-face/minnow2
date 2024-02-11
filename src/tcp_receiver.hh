@@ -27,4 +27,7 @@ public:
 
 private:
   Reassembler reassembler_;
+  Wrap32 ISN {0};
+  uint64_t checkpoint = 0;
+  bool isISNSet = false;
 };
