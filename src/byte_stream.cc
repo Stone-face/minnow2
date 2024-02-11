@@ -29,11 +29,11 @@ void Writer::close()
   is_wr_closed_ = true;
 }
 
-void Writer::set_error()
-{
-  // Your code here.
-  is_wr_error_ = true;
-}
+// void Writer::set_error()
+// {
+//   // Your code here.
+//   is_wr_error_ = true;
+// }
 
 bool Writer::is_closed() const
 {
@@ -71,11 +71,11 @@ bool Reader::is_finished() const
   return is_wr_closed_ && byteQueue.size() == 0;
 }
 
-bool Reader::has_error() const
-{
-  // Your code here.
-  return is_wr_error_;
-}
+// bool Reader::has_error() const
+// {
+//   // Your code here.
+//   return is_wr_error_;
+// }
 
 void Reader::pop( uint64_t len )
 {
