@@ -34,6 +34,9 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
     return;
   }
   uint64_t  store_len = min(store_endIdx - first_index, data.length());
+  if (store_len < data.length()) {
+    is_last_substring = false;
+  }
   Sub newSub(first_index, data.substr(0, store_len), is_last_substring);
 
   // auto insertedPos = subList.begin();
