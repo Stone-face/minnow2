@@ -34,7 +34,7 @@ TCPReceiverMessage TCPReceiver::send() const
   TCPReceiverMessage message{
     ack,
     windowSize,
-    reassembler_.writer().has_error() ||  reassembler_.reader().has_error()
+    reassembler_.writer().has_error() ||  reassembler_.reader().has_error() || error
   };
   
   return message;
