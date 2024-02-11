@@ -17,7 +17,11 @@ public:
   /* Construct TCP sender with given default Retransmission Timeout and possible ISN */
   TCPSender( ByteStream&& input, Wrap32 isn, uint64_t initial_RTO_ms )
     : input_( std::move( input ) ), isn_( isn ), initial_RTO_ms_( initial_RTO_ms )
-  {}
+  {
+    cur_RTO_ms = initial_RTO_ms_;
+    seqno = isn_;
+    window_size = 1;
+  }
 
   /* Generate an empty TCPSenderMessage */
   TCPSenderMessage make_empty_message() const;
@@ -48,4 +52,18 @@ private:
   ByteStream input_;
   Wrap32 isn_;
   uint64_t initial_RTO_ms_;
+
+  uint64_t checkpoint = 0;
+  uint64_t cur_RTO_ms;
+  uint64_t timer;
+  bool isTimerRunning = false;
+  // Reader outbound_stream_  {ByteStream(0)}; 
+
+  uint64_t consecutiveRetrans = 0;
+  uint64_t sequenceNumbersFli = 0;
+  Wrap32 seqno{0};
+  uint16_t window_size;
+
+  bool FINSent = false;
+  std::list<TCPSenderMessage> outstandingSeg;
 };
