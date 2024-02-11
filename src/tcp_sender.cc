@@ -57,7 +57,8 @@ void TCPSender::push( const TransmitFunction& transmit )
       seqno,
       SYN,
       data,
-      FIN
+      FIN,
+      input_.reader().has_error()
     };
 
     seqno = seqno + message.sequence_length();
@@ -91,7 +92,8 @@ TCPSenderMessage TCPSender::make_empty_message() const
     seqno,
     SYN,
     data,
-    FIN
+    FIN,
+    input_.reader().has_error()
   };
 
   return message;
@@ -99,6 +101,7 @@ TCPSenderMessage TCPSender::make_empty_message() const
 
 void TCPSender::receive( const TCPReceiverMessage& msg )
 {
+
   window_size = msg.window_size;
   
   bool isNewData = false;
