@@ -13,7 +13,6 @@ void TCPReceiver::receive( TCPSenderMessage message )
 
   if(message.RST) {
     reassembler_.reader().set_error();
-    reassembler_.writer().set_error();
   }
   
   Wrap32 payloadSeqno = message.SYN ? message.seqno + 1 : message.seqno;
