@@ -10,6 +10,7 @@ int main()
   try {
     {
       // Overlapping assembled (unread) section
+      cout << "achieve test 1" << endl;
       const size_t cap = { 1000 };
       ReassemblerTestHarness test { "overlapping assembled/unread section", cap };
 
@@ -22,6 +23,7 @@ int main()
 
     {
       // Overlapping assembled (read) section
+      cout << "achieve test 2" << endl;
       const size_t cap = { 1000 };
       ReassemblerTestHarness test { "overlapping assembled/read section", cap };
 
