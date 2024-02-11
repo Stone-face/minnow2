@@ -10,6 +10,7 @@ void TCPReceiver::receive( TCPSenderMessage message )
     ISN = message.seqno;  // ??
     isISNSet = true;
   }
+  error = message.RST;
   Wrap32 payloadSeqno = message.SYN ? message.seqno + 1 : message.seqno;
   uint64_t absSeqno = payloadSeqno.unwrap(ISN, checkpoint);
   string data = message.payload;
@@ -32,7 +33,8 @@ TCPReceiverMessage TCPReceiver::send() const
 
   TCPReceiverMessage message{
     ack,
-    windowSize
+    windowSize,
+    error
   };
   
   return message;

@@ -30,4 +30,5 @@ private:
   Wrap32 ISN {0};
   uint64_t checkpoint = 0;
   bool isISNSet = false;
+  bool error = false;
 };
