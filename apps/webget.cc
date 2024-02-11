@@ -4,7 +4,7 @@
 #include <iostream>
 #include <span>
 #include <string>
-
+#include "tcp minnow socket.hh"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ void get_URL( const string& host, const string& path )
 {
   
   
-  TCPSocket tcpsock;
+  CS144TCPSocket tcpsock;
   tcpsock.connect(Address(host, "http"));
   tcpsock.write("GET " + path + " HTTP/1.1" + "\r\n");
   tcpsock.write("Host: " + host + "\r\n");
