@@ -61,11 +61,14 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
       request.opcode = ARPMessage::OPCODE_REQUEST;
       request.sender_ethernet_address = ethernet_address_;
       request.sender_ip_address = ip_address_.ipv4_numeric();
-      request.target_ethernet_address = ETHERNET_BROADCAST;
+      request.target_ethernet_address = {0, 0, 0, 0, 0, 0};
       request.target_ip_address = ipaddress;
       
       arpFrame.header = arpFheader;
       arpFrame.payload = serialize(request);
+
+      cout << "achieve here to transmit arp?" << endl;
+
       transmit(arpFrame);
 
       if (lastArpTime.find(ipaddress) == lastArpTime.end()) {
