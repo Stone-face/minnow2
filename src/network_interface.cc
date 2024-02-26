@@ -99,18 +99,18 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
     }
     
 
-    // for (auto it = waitingFrames.begin(); it != waitingFrames.end(); /* no increment here */) {
-    //     // Check if the current element should be removed
-    //     if (it->ip == arp.sender_ip_address) {
-    //         // Erase the element and obtain the iterator to the next element
-    //         it->frame.header.dst = arp.sender_ethernet_address;
-    //         transmit(it->frame);
-    //         it = waitingFrames.erase(it);
-    //     } else {
-    //         // Move to the next element
-    //         ++it;
-    //     }
-    // }
+    for (auto it = waitingFrames.begin(); it != waitingFrames.end(); /* no increment here */) {
+        // Check if the current element should be removed
+        if (it->ip == arp.sender_ip_address) {
+            // Erase the element and obtain the iterator to the next element
+            it->frame.header.dst = arp.sender_ethernet_address;
+            transmit(it->frame);
+            it = waitingFrames.erase(it);
+        } else {
+            // Move to the next element
+            ++it;
+        }
+    }
 
     
     if (arp.opcode == ARPMessage::OPCODE_REQUEST && arp.target_ip_address == ip_address_.ipv4_numeric()) {
