@@ -34,12 +34,12 @@
 struct macInfo{
   EthernetAddress ethernetAddress;
   uint32_t time;
-}
+};
 
 struct waitingFrame{
     EthernetFrame frame;
     uint32_t ip;
-}
+};
 
 class NetworkInterface
 {

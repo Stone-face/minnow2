@@ -49,7 +49,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 
   } else {
 
-    if (lastArpTime.find(ipaddress) == lastArpTime.end() || lastArpTime[lastArpTime] + 5000 < timer) {
+    if (lastArpTime.find(ipaddress) == lastArpTime.end() || lastArpTime[ipaddress] + 5000 < timer) {
       struct EthernetFrame arpFrame;
       struct EthernetHeader arpFheader;
 
@@ -69,7 +69,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
       transmit(arpFrame);
 
       if (lastArpTime.find(ipaddress) == lastArpTime.end()) {
-        lastArpTime.instert(make_pair(ipaddress, timer));
+        lastArpTime.insert(make_pair(ipaddress, timer));
       } else {
         lastArpTime[ipaddress] = timer;
       }
