@@ -86,7 +86,7 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
     ARPMessage arp;
     parse(arp, frame.payload);
     struct macInfo thisMacInfo;
-    thisMacInfo.ethernetFrame =  arp.sender_ethernet_address;
+    thisMacInfo.ethernetAddress =  arp.sender_ethernet_address;
     thisMacInfo.time = timer;
 
     if (ipMap.find(arp.sender_ip_address) == ipMap.end()) {

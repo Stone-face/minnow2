@@ -101,5 +101,5 @@ private:
   std::map<uint32_t, size_t> lastArpTime {};
   std::vector<waitingFrame> waitingFrames{};
 
-  size_t _timer=0;
+  size_t timer=0;
 };
