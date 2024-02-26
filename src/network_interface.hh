@@ -1,6 +1,8 @@
 #pragma once
 
 #include <queue>
+#include <map>
+#include <vector>
 
 #include "address.hh"
 #include "ethernet_frame.hh"
@@ -27,6 +29,18 @@
 // the network interface passes it up the stack. If it's an ARP
 // request or reply, the network interface processes the frame
 // and learns or replies as necessary.
+
+
+struct macInfo{
+  EthernetAddress ethernetAddress;
+  uint32_t time;
+}
+
+struct waitingFrame{
+    EthernetFrame frame;
+    uint32_t ip;
+}
+
 class NetworkInterface
 {
 public:
@@ -81,4 +95,11 @@ private:
 
   // Datagrams that have been received
   std::queue<InternetDatagram> datagrams_received_ {};
+
+  std::map<uint32_t, macInfo> ipMap {};
+  
+  std::map<uint32_t, size_t> lastArpTime {};
+  std::vector<waitingFrame> waitingFrames{};
+
+  size_t _timer=0;
 };
