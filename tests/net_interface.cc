@@ -310,7 +310,7 @@ int main()
       test.execute(
         ExpectFrame { make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) ) } );
       test.execute( ExpectNoFrame {} );
-
+      cout << "hahahahaha" << endl;
       // outgoing datagram to second destination (mapping has expired)
       const auto datagram4 = make_datagram( "244.244.244.244", "3.3.3.3" );
       test.execute( SendDatagram { datagram4, Address( "10.0.0.5", 0 ) } );
