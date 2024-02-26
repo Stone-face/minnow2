@@ -69,13 +69,14 @@ int main()
 
       const auto datagram = make_datagram( "5.6.7.8", "13.12.11.10" );
       test.execute( SendDatagram { datagram, Address( "192.168.0.1", 0 ) } );
-
+      cout << "test acheive here?" << endl;
       // outgoing datagram should result in an ARP request
       test.execute( ExpectFrame { make_frame(
         local_eth,
         ETHERNET_BROADCAST,
         EthernetHeader::TYPE_ARP,
         serialize( make_arp( ARPMessage::OPCODE_REQUEST, local_eth, "4.3.2.1", {}, "192.168.0.1" ) ) ) } );
+      cout << "test acheive here?" << endl;
       test.execute( ExpectNoFrame {} );
       const EthernetAddress target_eth = random_private_ethernet_address();
 
