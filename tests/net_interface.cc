@@ -311,7 +311,7 @@ int main()
         ExpectFrame { make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) ) } );
       
       
-      std::cout << "parsedData: " << make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) ) << endl;
+      std::cout << "parsedData: " << summary(make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) )) << endl;
       
       
       
