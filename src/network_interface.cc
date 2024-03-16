@@ -38,7 +38,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
   fheader.src = ethernet_address_;
   fheader.type = EthernetHeader::TYPE_IPv4;
   // std::vector<std::string> fpayload = serialize(dgram);
-  frame.payload = serialize(dgram);
+  frame.payload = Parser::serialize(dgram);
   
   if (ipMap.find(ipaddress) != ipMap.end() && timer <= ipMap[ipaddress].time + 30000) {  
     fheader.dst = ipMap[ipaddress].ethernetAddress;
