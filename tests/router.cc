@@ -51,8 +51,8 @@ public:
     ranges::for_each( connections_, [&]( auto& weak_ref ) {
       const shared_ptr<NetworkInterface> interface( weak_ref );
       if ( &sender != interface.get() ) {
-        cerr << "Transferring frame from " << sender.name() << " to " << interface->name() << ": "
-             << summary( frame ) << "\n";
+        // cerr << "Transferring frame from " << sender.name() << " to " << interface->name() << ": "
+        //      << summary( frame ) << "\n";
         interface->recv_frame( frame );
       }
     } );
