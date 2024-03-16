@@ -62,7 +62,7 @@ void Router::route()
   // Your code here.
   // std::cout << "route() entered " << endl;
   for (size_t i = 0; i < _interfaces.size(); i++) {
-    std::queue<InternetDatagram> que = interface(i)->datagrams_received();
+    std::queue<InternetDatagram>& que = interface(i)->datagrams_received();
     if (que.size() > 0) {
       std::cout << "interfaces num: "  << i << " que size: " << que.size() << endl;
     }
