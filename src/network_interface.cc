@@ -147,9 +147,9 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
             // Erase the element and obtain the iterator to the next element
             it->frame.header.dst = arp.sender_ethernet_address;
 
-            for (size_t i = 0; i < it->frame.payload.size(); i++) {
-              std::cout << "serialized value: " << it->frame.payload[i] << endl;
-            }
+            // for (size_t i = 0; i < it->frame.payload.size(); i++) {
+            //   std::cout << "serialized value: " << it->frame.payload[i] << endl;
+            // }
             std::cout << "parsedData: " << summary(it->frame) << endl;
             transmit(it->frame);
 
