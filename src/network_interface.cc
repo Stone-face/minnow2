@@ -43,10 +43,10 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
   dgram.serialize( s );
   frame.payload = s.output();
   
-  for (int i = 0; i < frame.payload.size(); i++) {
+  for (size_t i = 0; i < frame.payload.size(); i++) {
     std::cout << "serialized value: " << frame.payload[i] << endl;
   }
-  
+
   if (ipMap.find(ipaddress) != ipMap.end() && timer <= ipMap[ipaddress].time + 30000) {  
     fheader.dst = ipMap[ipaddress].ethernetAddress;
     frame.header = fheader;
