@@ -15,7 +15,7 @@ std::string summary( const EthernetFrame& frame )
     case EthernetHeader::TYPE_IPv4: {
       InternetDatagram dgram;
       if ( parse( dgram, frame.payload ) ) {
-        out.append( dgram.header.to_string() + " payload=\"" + Printer::prettify( concat( dgram.payload ) )
+        out.append( dgram.header.to_string() + " payload=\"" + concat( dgram.payload ) 
                     + "\"" );
       } else {
         out.append( "bad IPv4 datagram" );
