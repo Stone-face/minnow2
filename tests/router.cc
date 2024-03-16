@@ -276,7 +276,11 @@ void network_simulator()
     dgram_sent.header.compute_checksum();
     network.host( "cherrypie" ).expect( dgram_sent );
 
-      const auto datagram3 = make_datagram( "150.140.130.120", "144.144.144.144" );
+    InternetDatagram revData;
+    bool parseRes = parse(revData, serialize(dgram_sent));
+    if (!parseRes) {
+      std::cout << "Couldn't be parsed in test." << endl;
+    }
       
       
     network.simulate();
