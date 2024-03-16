@@ -41,9 +41,9 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 
   // Serializer s;
   // dgram.serialize( s );
-  // frame.payload = s.output();
+  // frame.payload = std::move(s.output());
   
-  frame.payload = dgram.payload;
+  frame.payload = srd::move(serialize(dgram));
   for (size_t i = 0; i < frame.payload.size(); i++) {
     std::cout << "serialized value: " << frame.payload[i] << endl;
   }
