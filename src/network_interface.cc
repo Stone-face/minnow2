@@ -48,7 +48,10 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 
 
   } else {
-
+    frame.header = fheader;
+    waitingFrames.push_back({frame, ipaddress});
+    std::cout << "waitingFrames.size() after pushing: " << waitingFrames.size() << endl;
+    
     if (lastArpTime.find(ipaddress) == lastArpTime.end() || lastArpTime[ipaddress] + 5000 < timer) {
       struct EthernetFrame arpFrame;
       struct EthernetHeader arpFheader;
@@ -77,9 +80,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
         lastArpTime[ipaddress] = timer;
       }
     }
-    frame.header = fheader;
-    waitingFrames.push_back({frame, ipaddress});
-    std::cout << "waitingFrames.size() after pushing: " << waitingFrames.size() << endl;
+    
   }
 }
 
