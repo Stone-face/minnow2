@@ -34,8 +34,7 @@ void Router::route()
 {
   // Your code here.
   for (size_t i = 0; i < _interfaces.size(); i++) {
-    auto interface =  _interfaces[i];
-    std::queue<InternetDatagram> que = interface->datagrams_received();
+    std::queue<InternetDatagram> que = interface(i)->datagrams_received();
     while (!que.empty()) {
       InternetDatagram datagram = que.front();  
       int maxLen = -1;
@@ -66,6 +65,13 @@ void Router::route()
   }
 }
 
+void uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
+    for (int i = 0; i < 32; i++) {
+        bitsArray[i] = (num & 1) == 1;
+        num >>= 1;
+    }
+}
+
 bool match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
   bool bits1[32];
   bool bits2[32];
@@ -82,9 +88,3 @@ bool match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
 }
 
 
-void uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
-    for (int i = 0; i < 32; i++) {
-        bitsArray[i] = (num & 1) == 1;
-        num >>= 1;
-    }
-}
