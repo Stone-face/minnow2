@@ -21,10 +21,70 @@ void Router::add_route( const uint32_t route_prefix,
        << " on interface " << interface_num << "\n";
 
   // Your code here.
+  RouteItem item;
+  item.route_prefix = route_prefix;
+  item.prefix_length = prefix_length;
+  item.next_hop = next_hop;
+  item.interface_num = interface_num;
+  routeTable.push_back(item);
 }
 
 // Go through all the interfaces, and route every incoming datagram to its proper outgoing interface.
 void Router::route()
 {
   // Your code here.
+  for (size_t i = 0; i < _interfaces.size(); i++) {
+    auto interface =  _interfaces[i];
+    std::queue<InternetDatagram> que = interface->datagrams_received();
+    while (!que.empty()) {
+      InternetDatagram datagram = que.front();  
+      int maxLen = -1;
+      int maxInd = -1;
+
+      for (size_t j = 0; j < routeTable.size(); j++) {
+        RouteItem item = routeTable[j];
+        if (match(item.route_prefix, item.prefix_length, datagram.header.dst)) {
+          if (item.prefix_length > maxLen) {
+            maxLen = item.prefix_length;
+            maxInd = j;
+          }
+        }
+      }
+
+      if (maxInd >= 0 && datagram.header.ttl > 1) {
+        datagram.header.ttl--;
+        RouteItem item = routeTable[maxInd];
+        if (item.next_hop.has_value()) {
+          interface(item.interface_num)->send_datagram(datagram, item.next_hop.value());
+        } else {
+          interface(item.interface_num)->send_datagram(datagram, Address::from_ipv4_numeric(datagram.header.dst));
+        }
+      }
+
+      que.pop(); 
+    }
+  }
+}
+
+bool match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
+  bool bits1[32];
+  bool bits2[32];
+  uint32ToBitsArray(route_prefix, bits1);
+  uint32ToBitsArray(ip, bits2);
+
+  for(uint8_t i = 0; i < prefix_length; i++) {
+    if (bits1[31 - i] != bits2[31 - i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
+void uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
+    for (int i = 0; i < 32; i++) {
+        bitsArray[i] = (num & 1) == 1;
+        num >>= 1;
+    }
 }
