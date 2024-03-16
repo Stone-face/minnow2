@@ -13,6 +13,10 @@ void Router::uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
 }
 
 bool Router::match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
+
+  std::cout << "route_prefix: " << Address::from_ipv4_numeric(route_prefix).to_string() << endl;
+  std::cout << "prefix_length: " << prefix_length << endl;
+  std::cout << "ip: " << Address::from_ipv4_numeric(ip).to_string() << endl;
   bool bits1[32];
   bool bits2[32];
   uint32ToBitsArray(route_prefix, bits1);
@@ -20,10 +24,11 @@ bool Router::match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
 
   for(uint8_t i = 0; i < prefix_length; i++) {
     if (bits1[31 - i] != bits2[31 - i]) {
+      std::cout << "res: false" << endl;
       return false;
     }
   }
-
+  std::cout << "res: true" << endl;
   return true;
 }
 
@@ -55,7 +60,7 @@ void Router::add_route( const uint32_t route_prefix,
 void Router::route()
 {
   // Your code here.
-  std::cout << "route() entered " << endl;
+  // std::cout << "route() entered " << endl;
   for (size_t i = 0; i < _interfaces.size(); i++) {
     std::queue<InternetDatagram> que = interface(i)->datagrams_received();
     while (!que.empty()) {
