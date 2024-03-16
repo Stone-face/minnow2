@@ -5,6 +5,28 @@
 
 using namespace std;
 
+void uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
+    for (int i = 0; i < 32; i++) {
+        bitsArray[i] = (num & 1) == 1;
+        num >>= 1;
+    }
+}
+
+bool match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
+  bool bits1[32];
+  bool bits2[32];
+  uint32ToBitsArray(route_prefix, bits1);
+  uint32ToBitsArray(ip, bits2);
+
+  for(uint8_t i = 0; i < prefix_length; i++) {
+    if (bits1[31 - i] != bits2[31 - i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 // route_prefix: The "up-to-32-bit" IPv4 address prefix to match the datagram's destination address against
 // prefix_length: For this route to be applicable, how many high-order (most-significant) bits of
 //    the route_prefix will need to match the corresponding bits of the datagram's destination address?
@@ -65,26 +87,6 @@ void Router::route()
   }
 }
 
-void uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
-    for (int i = 0; i < 32; i++) {
-        bitsArray[i] = (num & 1) == 1;
-        num >>= 1;
-    }
-}
 
-bool match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
-  bool bits1[32];
-  bool bits2[32];
-  uint32ToBitsArray(route_prefix, bits1);
-  uint32ToBitsArray(ip, bits2);
-
-  for(uint8_t i = 0; i < prefix_length; i++) {
-    if (bits1[31 - i] != bits2[31 - i]) {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 
