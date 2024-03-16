@@ -146,9 +146,11 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
     }
 
   } else if (frame.header.type == EthernetHeader::TYPE_IPv4 && frame.header.dst == ethernet_address_) {
+    std::cout << "recv any IPv4 data frame?" << endl;
     InternetDatagram revData;
     bool parseRes = parse(revData, frame.payload);
     if (parseRes) {
+      std::cout << "push to received queue?" << endl;
       datagrams_received_.push(revData);
     }
   }
