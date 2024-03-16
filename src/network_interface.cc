@@ -85,6 +85,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 //! \param[in] frame the incoming Ethernet frame
 void NetworkInterface::recv_frame( const EthernetFrame& frame )
 {
+  std::cout << "recv any frame?" << endl;
   if (frame.header.type == EthernetHeader::TYPE_ARP) {
     ARPMessage arp;
     parse(arp, frame.payload);
