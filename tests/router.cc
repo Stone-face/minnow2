@@ -247,6 +247,18 @@ public:
   }
 };
 
+InternetDatagram make_datagram( const string& src_ip, const string& dst_ip ) // NOLINT(*-swappable-*)
+{
+  InternetDatagram dgram;
+  dgram.header.src = Address( src_ip, 0 ).ipv4_numeric();
+  dgram.header.dst = Address( dst_ip, 0 ).ipv4_numeric();
+  dgram.payload.emplace_back( "hello" );
+  dgram.header.len = static_cast<uint64_t>( dgram.header.hlen ) * 4 + dgram.payload.front().size();
+  dgram.header.compute_checksum();
+  return dgram;
+}
+
+
 void network_simulator()
 {
   const string green = "\033[32;1m";
@@ -263,6 +275,10 @@ void network_simulator()
     dgram_sent.header.ttl--;
     dgram_sent.header.compute_checksum();
     network.host( "cherrypie" ).expect( dgram_sent );
+
+      const auto datagram3 = make_datagram( "150.140.130.120", "144.144.144.144" );
+      
+      
     network.simulate();
   }
 
