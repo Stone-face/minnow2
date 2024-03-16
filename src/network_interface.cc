@@ -50,8 +50,8 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
   } else {
     frame.header = fheader;
     waitingFrames.push_back({frame, ipaddress});
-    std::cout << "waitingFrames.size() after pushing: " << waitingFrames.size() << endl;
-    
+    // std::cout << "waitingFrames.size() after pushing: " << waitingFrames.size() << endl;
+
     if (lastArpTime.find(ipaddress) == lastArpTime.end() || lastArpTime[ipaddress] + 5000 < timer) {
       struct EthernetFrame arpFrame;
       struct EthernetHeader arpFheader;
@@ -70,7 +70,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
       arpFrame.header = arpFheader;
       arpFrame.payload = serialize(request);
 
-      cout << "achieve here to transmit arp?" << endl;
+      // cout << "achieve here to transmit arp?" << endl;
 
       transmit(arpFrame);
 
@@ -87,7 +87,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 //! \param[in] frame the incoming Ethernet frame
 void NetworkInterface::recv_frame( const EthernetFrame& frame )
 {
-  std::cout << "recv any frame?" << endl;
+  // std::cout << "recv any frame?" << endl;
   if (frame.header.type == EthernetHeader::TYPE_ARP) {
     ARPMessage arp;
     parse(arp, frame.payload);
@@ -101,17 +101,17 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
       ipMap[arp.sender_ip_address] = thisMacInfo;
     }
     
-    std::cout << "waitingFrames.size(): " << waitingFrames.size() << endl;
+    // std::cout << "waitingFrames.size(): " << waitingFrames.size() << endl;
     for (auto it = waitingFrames.begin(); it != waitingFrames.end(); /* no increment here */) {
         // Check if the current element should be removed
         
-        std::cout << "it->ip: " << it->ip << " arp.sender_ip_address: " << arp.sender_ip_address << endl;
+        // std::cout << "it->ip: " << it->ip << " arp.sender_ip_address: " << arp.sender_ip_address << endl;
         if (it->ip == arp.sender_ip_address) {
             // Erase the element and obtain the iterator to the next element
             it->frame.header.dst = arp.sender_ethernet_address;
             transmit(it->frame);
 
-            std::cout << "retransit after knowing ip" << endl;
+            // std::cout << "retransit after knowing ip" << endl;
             it = waitingFrames.erase(it);
         } else {
             // Move to the next element
