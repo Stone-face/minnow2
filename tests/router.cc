@@ -47,6 +47,7 @@ class NetworkSegment : public NetworkInterface::OutputPort
 public:
   void transmit( const NetworkInterface& sender, const EthernetFrame& frame ) override
   {
+    std::cout << "transmit triggered?" << endl;
     ranges::for_each( connections_, [&]( auto& weak_ref ) {
       const shared_ptr<NetworkInterface> interface( weak_ref );
       if ( &sender != interface.get() ) {
