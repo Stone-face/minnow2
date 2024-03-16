@@ -39,10 +39,11 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
   fheader.type = EthernetHeader::TYPE_IPv4;
   // std::vector<std::string> fpayload = serialize(dgram);
 
-  Serializer s;
-  dgram.serialize( s );
-  frame.payload = s.output();
+  // Serializer s;
+  // dgram.serialize( s );
+  // frame.payload = s.output();
   
+  frame.payload = dgram.payload;
   for (size_t i = 0; i < frame.payload.size(); i++) {
     std::cout << "serialized value: " << frame.payload[i] << endl;
   }
