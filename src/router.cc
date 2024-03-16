@@ -63,11 +63,13 @@ void Router::route()
   // std::cout << "route() entered " << endl;
   for (size_t i = 0; i < _interfaces.size(); i++) {
     std::queue<InternetDatagram> que = interface(i)->datagrams_received();
+    std::cout << "interfaces num: "  << i << " que size: " << que.size() << endl;
     while (!que.empty()) {
       InternetDatagram datagram = que.front();  
       int maxLen = -1;
       int maxInd = -1;
 
+      std::cout << "routeTable size: " << routeTable.size() << endl;
       for (size_t j = 0; j < routeTable.size(); j++) {
         RouteItem item = routeTable[j];
         if (match(item.route_prefix, item.prefix_length, datagram.header.dst)) {
