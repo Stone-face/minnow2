@@ -55,6 +55,7 @@ void Router::add_route( const uint32_t route_prefix,
 void Router::route()
 {
   // Your code here.
+  std::cout << "route() entered " << endl;
   for (size_t i = 0; i < _interfaces.size(); i++) {
     std::queue<InternetDatagram> que = interface(i)->datagrams_received();
     while (!que.empty()) {
