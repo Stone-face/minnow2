@@ -86,6 +86,16 @@ void Router::route()
       if (maxInd >= 0 && datagram.header.ttl > 1) {
         datagram.header.ttl--;
         RouteItem item = routeTable[maxInd];
+
+        InternetDatagram revData;
+        bool parseRes = parse(revData, serialize(datagram));
+        if (!parseRes) {
+          std::cout << "Couldn't be parsed in router.cc before transmitting." << endl;
+        } else {
+          std::cout << "Could be parsed in router.cc before transmitting." << endl;
+        }
+
+
         if (item.next_hop.has_value()) {
           interface(item.interface_num)->send_datagram(datagram, item.next_hop.value());
           std::cout << "interface_num: " << item.interface_num << " next_hop: " << item.next_hop.value().to_string() << endl;

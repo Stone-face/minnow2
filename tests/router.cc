@@ -280,6 +280,8 @@ void network_simulator()
     bool parseRes = parse(revData, serialize(dgram_sent));
     if (!parseRes) {
       std::cout << "Couldn't be parsed in test." << endl;
+    } else {
+      std::cout << "Could be parsed in test." << endl;
     }
       
       
