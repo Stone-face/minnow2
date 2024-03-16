@@ -5,6 +5,7 @@
 #include "network_interface.hh"
 #include <vector>
 
+#include "network_interface_test_harness.hh"
 
 using namespace std;
 
