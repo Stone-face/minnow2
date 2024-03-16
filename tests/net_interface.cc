@@ -320,6 +320,9 @@ int main()
       // outgoing datagram to second destination (mapping has expired)
       const auto datagram4 = make_datagram( "244.244.244.244", "3.3.3.3" );
       test.execute( SendDatagram { datagram4, Address( "10.0.0.5", 0 ) } );
+      
+      test.execute( ExpectNoFrame {} ); // only for test!!!!
+
       test.execute( ExpectFrame { make_frame(
         local_eth,
         ETHERNET_BROADCAST,
