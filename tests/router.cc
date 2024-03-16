@@ -124,6 +124,8 @@ public:
 
   void check()
   {
+
+    std::cout << "interface received size: " << _interface->datagrams_received().size() << endl;
     while ( not _interface->datagrams_received().empty() ) {
       auto& dgram_received = _interface->datagrams_received().front();
       if ( not expecting( dgram_received ) ) {
