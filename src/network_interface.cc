@@ -79,6 +79,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
     }
     frame.header = fheader;
     waitingFrames.push_back({frame, ipaddress});
+    std::cout << "waitingFrames.size() after pushing: " << waitingFrames.size() << endl;
   }
 }
 
