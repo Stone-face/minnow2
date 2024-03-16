@@ -77,10 +77,10 @@ void Router::route()
         RouteItem item = routeTable[maxInd];
         if (item.next_hop.has_value()) {
           interface(item.interface_num)->send_datagram(datagram, item.next_hop.value());
-          std::cout << "interface_num: " << item.interface_num << " next_hop: " << item.next_hop.value() << endl;
+          std::cout << "interface_num: " << item.interface_num << " next_hop: " << item.next_hop.value().to_string() << endl;
         } else {
           interface(item.interface_num)->send_datagram(datagram, Address::from_ipv4_numeric(datagram.header.dst));
-          std::cout << "interface_num: " << item.interface_num << " next_hop: " << Address::from_ipv4_numeric(datagram.header.dst) << endl;
+          std::cout << "interface_num: " << item.interface_num << " next_hop: " << Address::from_ipv4_numeric(datagram.header.dst).to_string() << endl;
         }
       }
 
