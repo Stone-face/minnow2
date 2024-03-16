@@ -310,8 +310,8 @@ int main()
       test.execute(
         ExpectFrame { make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) ) } );
       
-      // InternetDatagram parsedData;
-      // parse(parsedData, frame.payload);
+      
+      std::cout << "parsedData: " << make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) ) << endl;
       
       
       
