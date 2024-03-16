@@ -80,7 +80,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
     fheader.dst = ipMap[ipaddress].ethernetAddress;
     frame.header = fheader;
 
-    std::cout << "parsedData: " << summary(frame) << endl;
+    // std::cout << "parsedData: " << summary(frame) << endl;
     transmit(frame);
 
 
@@ -146,6 +146,8 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
         if (it->ip == arp.sender_ip_address) {
             // Erase the element and obtain the iterator to the next element
             it->frame.header.dst = arp.sender_ethernet_address;
+
+            std::cout << "parsedData: " << summary(it->frame) << endl;
             transmit(it->frame);
 
             // std::cout << "retransit after knowing ip" << endl;
