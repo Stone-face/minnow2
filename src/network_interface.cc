@@ -5,9 +5,36 @@
 #include "network_interface.hh"
 #include <vector>
 
-#include "network_interface_test_harness.hh"
 
 using namespace std;
+
+std::string summary( const EthernetFrame& frame )
+{
+  std::string out = frame.header.to_string() + " payload: ";
+  switch ( frame.header.type ) {
+    case EthernetHeader::TYPE_IPv4: {
+      InternetDatagram dgram;
+      if ( parse( dgram, frame.payload ) ) {
+        out.append( dgram.header.to_string() + " payload=\"" + Printer::prettify( concat( dgram.payload ) )
+                    + "\"" );
+      } else {
+        out.append( "bad IPv4 datagram" );
+      }
+    } break;
+    case EthernetHeader::TYPE_ARP: {
+      ARPMessage arp;
+      if ( parse( arp, frame.payload ) ) {
+        out.append( arp.to_string() );
+      } else {
+        out.append( "bad ARP message" );
+      }
+    } break;
+    default:
+      out.append( "unknown frame type" );
+      break;
+  }
+  return out;
+}
 
 //! \param[in] ethernet_address Ethernet (what ARP calls "hardware") address of the interface
 //! \param[in] ip_address IP (what ARP calls "protocol") address of the interface
