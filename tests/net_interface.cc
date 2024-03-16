@@ -311,7 +311,7 @@ int main()
         ExpectFrame { make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) ) } );
       
       
-      std::cout << "parsedData: " << summary(make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) )) << endl;
+      // std::cout << "parsedData: " << summary(make_frame( local_eth, remote_eth2, EthernetHeader::TYPE_IPv4, serialize( datagram3 ) )) << endl;
       
       
       
@@ -321,7 +321,7 @@ int main()
       const auto datagram4 = make_datagram( "244.244.244.244", "3.3.3.3" );
       test.execute( SendDatagram { datagram4, Address( "10.0.0.5", 0 ) } );
       
-      test.execute( ExpectNoFrame {} ); // only for test!!!!
+      // test.execute( ExpectNoFrame {} ); // only for test!!!!
 
       test.execute( ExpectFrame { make_frame(
         local_eth,

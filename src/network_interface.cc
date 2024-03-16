@@ -44,14 +44,15 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
   // frame.payload = std::move(s.output());
   
   frame.payload = std::move(fpayload);
-  for (size_t i = 0; i < frame.payload.size(); i++) {
-    std::cout << "serialized value: " << frame.payload[i] << endl;
-  }
+  // for (size_t i = 0; i < frame.payload.size(); i++) {
+  //   std::cout << "serialized value: " << frame.payload[i] << endl;
+  // }
 
   if (ipMap.find(ipaddress) != ipMap.end() && timer <= ipMap[ipaddress].time + 30000) {  
     fheader.dst = ipMap[ipaddress].ethernetAddress;
     frame.header = fheader;
-   
+
+    std::cout << "parsedData: " << summary(frame) << endl;
     transmit(frame);
 
 
