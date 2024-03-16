@@ -99,13 +99,17 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
       ipMap[arp.sender_ip_address] = thisMacInfo;
     }
     
-
+    std::cout << "waitingFrames.size(): " << waitingFrames.size() << endl;
     for (auto it = waitingFrames.begin(); it != waitingFrames.end(); /* no increment here */) {
         // Check if the current element should be removed
+        
+        std::cout << "it->ip: " << it->ip << " arp.sender_ip_address: " << arp.sender_ip_address << endl;
         if (it->ip == arp.sender_ip_address) {
             // Erase the element and obtain the iterator to the next element
             it->frame.header.dst = arp.sender_ethernet_address;
             transmit(it->frame);
+
+            std::cout << "retransit after knowing ip" << endl;
             it = waitingFrames.erase(it);
         } else {
             // Move to the next element
