@@ -47,7 +47,7 @@ class NetworkSegment : public NetworkInterface::OutputPort
 public:
   void transmit( const NetworkInterface& sender, const EthernetFrame& frame ) override
   {
-    std::cout << "transmit triggered?" << endl;
+    // std::cout << "transmit triggered?" << endl;
     ranges::for_each( connections_, [&]( auto& weak_ref ) {
       const shared_ptr<NetworkInterface> interface( weak_ref );
       if ( &sender != interface.get() ) {
@@ -125,7 +125,7 @@ public:
   void check()
   {
 
-    std::cout << "interface received size: " << _interface->datagrams_received().size() << endl;
+    // std::cout << "interface received size: " << _interface->datagrams_received().size() << endl;
     while ( not _interface->datagrams_received().empty() ) {
       auto& dgram_received = _interface->datagrams_received().front();
       if ( not expecting( dgram_received ) ) {
