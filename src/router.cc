@@ -5,14 +5,14 @@
 
 using namespace std;
 
-void uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
+void Router::uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
     for (int i = 0; i < 32; i++) {
         bitsArray[i] = (num & 1) == 1;
         num >>= 1;
     }
 }
 
-bool match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
+bool Router::match(uint32_t route_prefix, uint8_t prefix_length, uint32_t ip) {
   bool bits1[32];
   bool bits2[32];
   uint32ToBitsArray(route_prefix, bits1);
