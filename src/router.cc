@@ -88,6 +88,7 @@ void Router::route()
         datagram.header.ttl--;
         RouteItem item = routeTable[maxInd];
 
+        std::cout << "datagram header before transmitting: " << datagram.header.to_string() << endl;
         InternetDatagram revData;
         bool parseRes = parse(revData, serialize(datagram));
         if (!parseRes) {
