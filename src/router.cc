@@ -5,10 +5,10 @@
 #include <numeric>
 
 using namespace std;
-std::string concat( const std::vector<std::string>& buffers )
+inline std::string concat( const std::vector<std::string>& buffers )
 {
-  // return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
-  return "";
+  return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+  
 }
 
 void Router::uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
