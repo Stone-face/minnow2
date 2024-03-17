@@ -69,6 +69,7 @@ void Router::route()
     
     while (!que.empty()) {
       InternetDatagram datagram = que.front();  
+      que.pop(); 
       int maxLen = -1;
       int maxInd = -1;
 
@@ -105,7 +106,7 @@ void Router::route()
         }
       }
 
-      que.pop(); 
+      // que.pop(); 
     }
   }
 }
