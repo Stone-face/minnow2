@@ -49,9 +49,9 @@ void Router::add_route( const uint32_t route_prefix,
                         const optional<Address> next_hop,
                         const size_t interface_num )
 {
-  // cerr << "DEBUG: adding route " << Address::from_ipv4_numeric( route_prefix ).ip() << "/"
-  //      << static_cast<int>( prefix_length ) << " => " << ( next_hop.has_value() ? next_hop->ip() : "(direct)" )
-  //      << " on interface " << interface_num << "\n";
+  cerr << "DEBUG: adding route " << Address::from_ipv4_numeric( route_prefix ).ip() << "/"
+       << static_cast<int>( prefix_length ) << " => " << ( next_hop.has_value() ? next_hop->ip() : "(direct)" )
+       << " on interface " << interface_num << "\n";
 
   // Your code here.
   RouteItem item;
@@ -65,13 +65,12 @@ void Router::add_route( const uint32_t route_prefix,
 // Go through all the interfaces, and route every incoming datagram to its proper outgoing interface.
 void Router::route()
 {
-  // Your code here.
-  // std::cout << "route() entered " << endl;
+ 
   for (size_t i = 0; i < _interfaces.size(); i++) {
     std::queue<InternetDatagram>& que = interface(i)->datagrams_received();
-    if (que.size() > 0) {
-      std::cout << "interfaces num: "  << i << " que size: " << que.size() << endl;
-    }
+    // if (que.size() > 0) {
+    //   std::cout << "interfaces num: "  << i << " que size: " << que.size() << endl;
+    // }
     
     while (!que.empty()) {
       InternetDatagram datagram = que.front();  
@@ -79,7 +78,7 @@ void Router::route()
       int maxLen = -1;
       int maxInd = -1;
 
-      std::cout << "routeTable size: " << routeTable.size() << endl;
+      // std::cout << "routeTable size: " << routeTable.size() << endl;
       for (size_t j = 0; j < routeTable.size(); j++) {
         RouteItem item = routeTable[j];
         if (match(item.route_prefix, item.prefix_length, datagram.header.dst)) {
@@ -95,24 +94,24 @@ void Router::route()
         datagram.header.compute_checksum();
         RouteItem item = routeTable[maxInd];
 
-        std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=" + concat( datagram.payload ) 
-                   << endl; 
+        // std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=" + concat( datagram.payload ) 
+        //            << endl; 
 
-        InternetDatagram revData;
-        bool parseRes = parse(revData, serialize(datagram));
-        if (!parseRes) {
-          std::cout << "Couldn't be parsed in router.cc before transmitting." << endl;
-        } else {
-          std::cout << "Could be parsed in router.cc before transmitting." << endl;
-        }
+        // InternetDatagram revData;
+        // bool parseRes = parse(revData, serialize(datagram));
+        // if (!parseRes) {
+        //   std::cout << "Couldn't be parsed in router.cc before transmitting." << endl;
+        // } else {
+        //   std::cout << "Could be parsed in router.cc before transmitting." << endl;
+        // }
 
 
         if (item.next_hop.has_value()) {
           interface(item.interface_num)->send_datagram(datagram, item.next_hop.value());
-          std::cout << "interface_num: " << item.interface_num << " next_hop: " << item.next_hop.value().to_string() << endl;
+          // std::cout << "interface_num: " << item.interface_num << " next_hop: " << item.next_hop.value().to_string() << endl;
         } else {
           interface(item.interface_num)->send_datagram(datagram, Address::from_ipv4_numeric(datagram.header.dst));
-          std::cout << "interface_num: " << item.interface_num << " next_hop: " << Address::from_ipv4_numeric(datagram.header.dst).to_string() << endl;
+          // std::cout << "interface_num: " << item.interface_num << " next_hop: " << Address::from_ipv4_numeric(datagram.header.dst).to_string() << endl;
         }
       }
 

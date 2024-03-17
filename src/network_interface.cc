@@ -7,39 +7,39 @@
 #include <numeric>
 
 using namespace std;
-inline std::string concat( const std::vector<std::string>& buffers )
-{
-  return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+// inline std::string concat( const std::vector<std::string>& buffers )
+// {
+//   return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
   
-}
+// }
 
-std::string summary( const EthernetFrame& frame )
-{
-  std::string out = frame.header.to_string() + " payload: ";
-  switch ( frame.header.type ) {
-    case EthernetHeader::TYPE_IPv4: {
-      InternetDatagram dgram;
-      if ( parse( dgram, frame.payload ) ) {
-        out.append( dgram.header.to_string() + " payload=\"" 
-                    + "\"" );
-      } else {
-        out.append( "bad IPv4 datagram" );
-      }
-    } break;
-    case EthernetHeader::TYPE_ARP: {
-      ARPMessage arp;
-      if ( parse( arp, frame.payload ) ) {
-        out.append( arp.to_string() );
-      } else {
-        out.append( "bad ARP message" );
-      }
-    } break;
-    default:
-      out.append( "unknown frame type" );
-      break;
-  }
-  return out;
-}
+// std::string summary( const EthernetFrame& frame )
+// {
+//   std::string out = frame.header.to_string() + " payload: ";
+//   switch ( frame.header.type ) {
+//     case EthernetHeader::TYPE_IPv4: {
+//       InternetDatagram dgram;
+//       if ( parse( dgram, frame.payload ) ) {
+//         out.append( dgram.header.to_string() + " payload=\"" 
+//                     + "\"" );
+//       } else {
+//         out.append( "bad IPv4 datagram" );
+//       }
+//     } break;
+//     case EthernetHeader::TYPE_ARP: {
+//       ARPMessage arp;
+//       if ( parse( arp, frame.payload ) ) {
+//         out.append( arp.to_string() );
+//       } else {
+//         out.append( "bad ARP message" );
+//       }
+//     } break;
+//     default:
+//       out.append( "unknown frame type" );
+//       break;
+//   }
+//   return out;
+// }
 
 //! \param[in] ethernet_address Ethernet (what ARP calls "hardware") address of the interface
 //! \param[in] ip_address IP (what ARP calls "protocol") address of the interface
@@ -71,29 +71,20 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
   fheader.src = ethernet_address_;
   fheader.type = EthernetHeader::TYPE_IPv4;
   std::vector<std::string> fpayload = serialize(dgram);
-
-  // Serializer s;
-  // dgram.serialize( s );
-  // frame.payload = std::move(s.output());
-  
   frame.payload = std::move(fpayload);
-  // for (size_t i = 0; i < frame.payload.size(); i++) {
-  //   std::cout << "serialized value: " << frame.payload[i] << endl;
-  // }
+
 
   if (ipMap.find(ipaddress) != ipMap.end() && timer <= ipMap[ipaddress].time + 30000) {  
     fheader.dst = ipMap[ipaddress].ethernetAddress;
     frame.header = fheader;
 
-    // std::cout << "parsedData: " << summary(frame) << endl;
     transmit(frame);
 
 
   } else {
     frame.header = fheader;
     waitingFrames.push_back({frame, ipaddress});
-    // std::cout << "waitingFrames.size() after pushing: " << waitingFrames.size() << endl;
-
+   
     if (lastArpTime.find(ipaddress) == lastArpTime.end() || lastArpTime[ipaddress] + 5000 < timer) {
       struct EthernetFrame arpFrame;
       struct EthernetHeader arpFheader;
@@ -129,7 +120,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 //! \param[in] frame the incoming Ethernet frame
 void NetworkInterface::recv_frame( const EthernetFrame& frame )
 {
-  // std::cout << "recv any frame?" << endl;
+  
   if (frame.header.type == EthernetHeader::TYPE_ARP) {
     ARPMessage arp;
     parse(arp, frame.payload);
@@ -143,22 +134,15 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
       ipMap[arp.sender_ip_address] = thisMacInfo;
     }
     
-    // std::cout << "waitingFrames.size(): " << waitingFrames.size() << endl;
+    /
     for (auto it = waitingFrames.begin(); it != waitingFrames.end(); /* no increment here */) {
         // Check if the current element should be removed
-        
         // std::cout << "it->ip: " << it->ip << " arp.sender_ip_address: " << arp.sender_ip_address << endl;
         if (it->ip == arp.sender_ip_address) {
             // Erase the element and obtain the iterator to the next element
             it->frame.header.dst = arp.sender_ethernet_address;
-
-            // for (size_t i = 0; i < it->frame.payload.size(); i++) {
-            //   std::cout << "serialized value: " << it->frame.payload[i] << endl;
-            // }
-            std::cout << "parsedData: " << summary(it->frame) << endl;
+            //std::cout << "parsedData: " << summary(it->frame) << endl;
             transmit(it->frame);
-
-            // std::cout << "retransit after knowing ip" << endl;
             it = waitingFrames.erase(it);
         } else {
             // Move to the next element
@@ -193,24 +177,23 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
     }
 
   } else if (frame.header.type == EthernetHeader::TYPE_IPv4 && frame.header.dst == ethernet_address_) {
-    std::cout << "parsedData before pushing to received queue: " << summary(frame) << endl;
+    // std::cout << "parsedData before pushing to received queue: " << summary(frame) << endl;
     InternetDatagram revData;
     bool parseRes = parse(revData, frame.payload);
     if (parseRes) {
-      // std::cout << "push to received queue?" << endl;
+      
       datagrams_received_.push(revData);
-
-      InternetDatagram revData2;
-      bool parseRes2 = parse(revData2, serialize(revData));
-      std::cout << "-------------parseRes2--------------" << endl;
-      if (!parseRes2) {
-        std::cout << "Couldn't be parsed" << endl;
-      } else {
-        std::cout << "Could be parsed." << endl;
-        std::cout << "datagram: " << revData.header.to_string() + " payload=\"" + concat( revData.payload ) 
-                    + "\""<< endl;
-      }
-      std::cout << "-------------parseRes2--------------" << endl;
+      // InternetDatagram revData2;
+      // bool parseRes2 = parse(revData2, serialize(revData));
+      // std::cout << "-------------parseRes2--------------" << endl;
+      // if (!parseRes2) {
+      //   std::cout << "Couldn't be parsed" << endl;
+      // } else {
+      //   std::cout << "Could be parsed." << endl;
+      //   std::cout << "datagram: " << revData.header.to_string() + " payload=\"" + concat( revData.payload ) 
+      //               + "\""<< endl;
+      // }
+      // std::cout << "-------------parseRes2--------------" << endl;
     }
   }
 }

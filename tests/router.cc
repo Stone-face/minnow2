@@ -51,8 +51,8 @@ public:
     ranges::for_each( connections_, [&]( auto& weak_ref ) {
       const shared_ptr<NetworkInterface> interface( weak_ref );
       if ( &sender != interface.get() ) {
-        // cerr << "Transferring frame from " << sender.name() << " to " << interface->name() << ": "
-        //      << summary( frame ) << "\n";
+        cerr << "Transferring frame from " << sender.name() << " to " << interface->name() << ": "
+             << summary( frame ) << "\n";
         interface->recv_frame( frame );
       }
     } );
@@ -276,13 +276,13 @@ void network_simulator()
     dgram_sent.header.compute_checksum();
     network.host( "cherrypie" ).expect( dgram_sent );
 
-    InternetDatagram revData;
-    bool parseRes = parse(revData, serialize(dgram_sent));
-    if (!parseRes) {
-      std::cout << "Couldn't be parsed in test." << endl;
-    } else {
-      std::cout << "Could be parsed in test." << endl;
-    }
+    // InternetDatagram revData;
+    // bool parseRes = parse(revData, serialize(dgram_sent));
+    // if (!parseRes) {
+    //   std::cout << "Couldn't be parsed in test." << endl;
+    // } else {
+    //   std::cout << "Could be parsed in test." << endl;
+    // }
       
       
     network.simulate();
