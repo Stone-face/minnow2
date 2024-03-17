@@ -4,6 +4,10 @@
 #include <limits>
 
 using namespace std;
+std::string concat( const std::vector<std::string>& buffers )
+{
+  return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+}
 
 void Router::uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
     for (int i = 0; i < 32; i++) {
@@ -88,7 +92,9 @@ void Router::route()
         datagram.header.ttl--;
         RouteItem item = routeTable[maxInd];
 
-        std::cout << "datagram header before transmitting: " << datagram.header.to_string() << endl;
+        std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=\"" + concat( datagram.payload ) 
+                    + "\""<< endl; << endl;
+
         InternetDatagram revData;
         bool parseRes = parse(revData, serialize(datagram));
         if (!parseRes) {

@@ -7,6 +7,10 @@
 
 
 using namespace std;
+std::string concat( const std::vector<std::string>& buffers )
+{
+  return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+}
 
 std::string summary( const EthernetFrame& frame )
 {
@@ -202,6 +206,8 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
         std::cout << "Couldn't be parsed" << endl;
       } else {
         std::cout << "Could be parsed." << endl;
+        std::cout << "datagram: " << revData.header.to_string() + " payload=\"" + concat( revData.payload ) 
+                    + "\""<< endl;
       }
       std::cout << "-------------parseRes2--------------" << endl;
     }
