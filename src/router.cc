@@ -92,7 +92,7 @@ void Router::route()
 
       if (maxInd >= 0 && datagram.header.ttl > 1) {
         datagram.header.ttl--;
-        dgram.header.compute_checksum();
+        datagram.header.compute_checksum();
         RouteItem item = routeTable[maxInd];
 
         std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=" + concat( datagram.payload ) 
