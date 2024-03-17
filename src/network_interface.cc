@@ -192,9 +192,18 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
     InternetDatagram revData;
     bool parseRes = parse(revData, frame.payload);
     if (parseRes) {
-      std::cout << "push to received queue?" << endl;
-
+      // std::cout << "push to received queue?" << endl;
       datagrams_received_.push(revData);
+
+      InternetDatagram revData2;
+      bool parseRes2 = parse(revData2, serialize(revData));
+      std::cout << "-------------parseRes2--------------" << endl;
+      if (!parseRes2) {
+        std::cout << "Couldn't be parsed" << endl;
+      } else {
+        std::cout << "Could be parsed." << endl;
+      }
+      std::cout << "-------------parseRes2--------------" << endl;
     }
   }
 }
