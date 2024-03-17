@@ -9,7 +9,8 @@
 using namespace std;
 std::string concat( const std::vector<std::string>& buffers )
 {
-  return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+  // return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+  return "";
 }
 
 std::string summary( const EthernetFrame& frame )

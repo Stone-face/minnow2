@@ -7,7 +7,8 @@
 using namespace std;
 std::string concat( const std::vector<std::string>& buffers )
 {
-  return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+  // return std::accumulate( buffers.begin(), buffers.end(), std::string {} );
+  return "";
 }
 
 void Router::uint32ToBitsArray(uint32_t num, bool bitsArray[32]) {
