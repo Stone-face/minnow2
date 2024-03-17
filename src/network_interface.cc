@@ -134,7 +134,7 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
       ipMap[arp.sender_ip_address] = thisMacInfo;
     }
     
-    /
+    
     for (auto it = waitingFrames.begin(); it != waitingFrames.end(); /* no increment here */) {
         // Check if the current element should be removed
         // std::cout << "it->ip: " << it->ip << " arp.sender_ip_address: " << arp.sender_ip_address << endl;
