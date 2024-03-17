@@ -93,7 +93,7 @@ void Router::route()
         RouteItem item = routeTable[maxInd];
 
         std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=\"" + concat( datagram.payload ) 
-                    + "\""<< endl; << endl;
+                    + "\""<< endl; 
 
         InternetDatagram revData;
         bool parseRes = parse(revData, serialize(datagram));
