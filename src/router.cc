@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <limits>
+#include <numeric>
 
 using namespace std;
 std::string concat( const std::vector<std::string>& buffers )
@@ -92,7 +93,7 @@ void Router::route()
         datagram.header.ttl--;
         RouteItem item = routeTable[maxInd];
 
-        std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=\"" + concat( datagram.payload ) 
+        std::cout << "datagram before transmitting: " << datagram.header.to_string() + " payload=" + concat( datagram.payload ) 
                     + "\""<< endl; 
 
         InternetDatagram revData;

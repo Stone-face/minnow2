@@ -4,7 +4,7 @@
 #include "exception.hh"
 #include "network_interface.hh"
 #include <vector>
-
+#include <numeric>
 
 using namespace std;
 std::string concat( const std::vector<std::string>& buffers )
